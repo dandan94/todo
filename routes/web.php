@@ -14,4 +14,10 @@
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'ListsController@index')->name('home');
+Route::get('/lists/show/{id}', 'ListsController@show');
+Route::post('/lists/create', 'ListsController@create');
+Route::post('/lists/archive', 'ListsController@archive');
+Route::delete('/lists/{id}', 'ListsController@destroy');
+
+Route::post('/tasks/create', 'TasksController@create');
