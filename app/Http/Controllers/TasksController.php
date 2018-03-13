@@ -50,6 +50,30 @@ class TasksController extends Controller
         return back()->with('error', 'Adding task in a non-existent list.');
     }
 
+    public function update(Request $request)
+    {
+        $id = $request->input('id');
+
+        $task = Task::where('id', $id)->first();
+
+        if($task !== null)
+        {
+            $this->validate($request, [
+                'description' => 'max:2000',
+                'status' => 'in:open,closed,paused'
+            ]);
+
+            //Fields to update
+            $toUpdate = array_only($request->input(), ['status', 'description']);
+
+            $task->update($toUpdate);
+
+            return back();
+        }
+
+        return back()->with('error', 'No such task');
+    }
+    
     /**
      * Delete task.
      *

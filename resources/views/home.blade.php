@@ -19,25 +19,37 @@
                         </div>
                     </form>
                     <ul class="list-group p-2">
-                        @foreach($taskLists as $taskList)
+                        @forelse($taskLists as $taskList)
                             <li class="list-group-item">
                                 <a href="{{ action('ListsController@show', $taskList->id)  }}">{{ $taskList->name }}</a>
                                 <div class="float-right">
-                                    <div class="float-right">
-                                        <form action="{{ action('ListsController@destroy', $taskList->id) }}" method="post">
-                                            @csrf
-                                            <input type="hidden" name="_method" value="delete">
-                                            <button class="btn btn-danger btn-sm">Delete</button>
-                                        </form>
-                                    </div>
-                                    @if($taskList->tasks()->get()->count() > 0)
-                                        <div class="float-right mr-2">
-                                            <button class="btn btn-dark btn-sm">Archive</button>
+                                    @if($taskList->to_delete == 0)
+                                        <div class="float-right">
+                                            <form action="{{ action('ListsController@destroy', $taskList->id) }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="_method" value="delete">
+                                                <button class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
                                         </div>
+                                    @else
+                                        <button disabled class="btn btn-danger btn-sm">Delete</button>
                                     @endif
+                                    <div class="float-right mr-2">
+                                        @if($taskList->tasks()->get()->count() > 0 && $taskList->is_archived == 0)
+                                            <form action="{{ action('ListsController@archive', $taskList->id) }}" method="post">
+                                                @csrf
+                                                <button class="btn btn-dark btn-sm">Archive</button>
+                                            </form>
+
+                                        @elseif($taskList->is_archived == 1)
+                                            <span class="text-muted">Archived</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </li>
-                        @endforeach
+                        @empty
+                            <div class="alert alert-info">There are no tasks at the moment.</div>
+                        @endforelse
                     </ul>
                 </div>
             </div>

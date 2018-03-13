@@ -17,7 +17,7 @@ class CreateTasksTable extends Migration
             $table->increments('id');
             $table->integer('list_id')->unsigned();
             $table->text('description');
-            $table->enum('status');
+            $table->enum('status', ['open', 'closed', 'paused']);
             $table->timestamps();
 
             $table->foreign('list_id')

@@ -12,6 +12,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script>
+        var APP_URL = "{{ url('/') }}";
+    </script>
 </head>
 <body>
     <div id="app">
@@ -27,7 +30,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @if(Auth::user() && Auth::user()->is_admin)
+                            <li><a href="{{ action('AdminController@index') }}">Admin</a></li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -63,7 +68,7 @@
         <main class="py-4">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         @yield('content')
                     </div>
                 </div>

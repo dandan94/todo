@@ -17,6 +17,11 @@ class TaskList extends Model
         'name',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'id');
+    }
+
     public function tasks()
     {
         return $this->hasMany('App\Task', 'list_id');
